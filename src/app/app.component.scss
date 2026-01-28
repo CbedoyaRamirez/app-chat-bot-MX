@@ -1,0 +1,454 @@
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--chubb-primary) 0%, #0A0646 100%);
+  font-family: var(--chubb-font-primary);
+}
+
+// Animaciones de entrada/salida
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+// Bot Selector Landing Page - Marina DS
+.bot-selector {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--chubb-primary) 0%, #0A0646 100%);
+  z-index: var(--chubb-z-modal);
+  overflow-y: auto;
+  animation: fadeInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+
+  .selector-container {
+    text-align: center;
+    color: var(--chubb-text-inverse);
+    padding: var(--chubb-spacing-8);
+    max-width: 900px;
+    width: 100%;
+
+    .selector-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--chubb-spacing-4);
+      margin-bottom: var(--chubb-spacing-8);
+      animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+
+      .logo {
+        height: 60px;
+        width: auto;
+        filter: none;
+      }
+
+      h1 {
+        font-size: var(--chubb-font-3xl);
+        font-weight: var(--chubb-font-semibold);
+        margin: 0;
+      }
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 300;
+      animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards 0.15s;
+    }
+
+    .selector-description {
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+      opacity: 0.9;
+      animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards 0.25s;
+    }
+
+    .bot-options {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+
+      .bot-option {
+        background: var(--chubb-bg-surface);
+        color: var(--chubb-text-primary);
+        border: 3px solid transparent;
+        border-radius: var(--chubb-radius-2xl);
+        padding: var(--chubb-spacing-10) var(--chubb-spacing-8);
+        width: 320px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: var(--chubb-shadow-lg);
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+
+        // Animación escalonada para cada tarjeta
+        &:nth-child(1) {
+          animation-delay: 0.1s;
+        }
+
+        &:nth-child(2) {
+          animation-delay: 0.2s;
+        }
+
+        &:nth-child(3) {
+          animation-delay: 0.3s;
+        }
+
+        // Gradiente animado de fondo
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            135deg,
+            rgba(26, 13, 171, 0.03) 0%,
+            rgba(26, 13, 171, 0.08) 50%,
+            rgba(26, 13, 171, 0.03) 100%
+          );
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          border-radius: inherit;
+          z-index: 0;
+        }
+
+        // Brillo superior
+        &::after {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.4) 0%,
+            transparent 70%
+          );
+          opacity: 0;
+          transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transform: scale(0);
+          z-index: 1;
+        }
+
+        // Contenido por encima de los efectos
+        > * {
+          position: relative;
+          z-index: 2;
+        }
+
+        &:hover {
+          transform: translateY(-12px) scale(1.02);
+          box-shadow:
+            0 20px 40px rgba(26, 13, 171, 0.2),
+            0 0 0 1px rgba(26, 13, 171, 0.1),
+            0 0 80px rgba(26, 13, 171, 0.08);
+          border-color: rgba(26, 13, 171, 0.2);
+
+          &::before {
+            opacity: 1;
+          }
+
+          &::after {
+            opacity: 1;
+            transform: scale(1);
+          }
+
+          .icon img {
+            transform: scale(1.15) rotate(5deg);
+            filter: brightness(0) saturate(100%) invert(13%) sepia(92%) saturate(4079%) hue-rotate(238deg) brightness(92%) contrast(102%) drop-shadow(0 4px 12px rgba(26, 13, 171, 0.3));
+          }
+
+          h3 {
+            color: var(--chubb-primary);
+            transform: translateX(4px);
+          }
+
+          p {
+            transform: translateX(2px);
+          }
+        }
+
+        &:active {
+          transform: translateY(-8px) scale(0.98);
+
+          // Efecto ripple al hacer click
+          &::after {
+            animation: ripple 0.6s ease-out;
+          }
+        }
+
+        // Efecto ripple al hacer click
+        .ripple-effect {
+          position: absolute;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.6);
+          width: 100px;
+          height: 100px;
+          pointer-events: none;
+          animation: ripple 0.6s ease-out;
+        }
+
+        &.active {
+          border-color: var(--chubb-primary);
+          background: var(--chubb-primary-lighter);
+          box-shadow:
+            0 12px 28px rgba(26, 13, 171, 0.25),
+            0 0 0 1px var(--chubb-primary);
+
+          &::before {
+            opacity: 0.5;
+          }
+        }
+
+        .icon {
+          margin-bottom: var(--chubb-spacing-6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          img {
+            width: 64px;
+            height: 64px;
+            filter: brightness(0) saturate(100%) invert(13%) sepia(92%) saturate(4079%) hue-rotate(238deg) brightness(92%) contrast(102%);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+        }
+
+        h3 {
+          font-size: var(--chubb-font-xl);
+          margin-bottom: var(--chubb-spacing-3);
+          color: var(--chubb-primary);
+          font-weight: var(--chubb-font-semibold);
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        p {
+          font-size: var(--chubb-font-sm);
+          color: var(--chubb-text-secondary);
+          line-height: var(--chubb-line-normal);
+          margin: 0;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+      }
+    }
+
+    .selector-footer {
+      margin-top: 2rem;
+      animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards 0.5s;
+
+      p {
+        font-size: 0.95rem;
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+.app-header {
+  background-color: var(--chubb-bg-surface);
+  box-shadow: var(--chubb-shadow-sm);
+  padding: var(--chubb-spacing-4) var(--chubb-spacing-8);
+  position: sticky;
+  top: 0;
+  z-index: var(--chubb-z-sticky);
+
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--chubb-spacing-4);
+
+    .logo {
+      height: 48px;
+      width: auto;
+    }
+
+    h1 {
+      color: var(--chubb-primary);
+      font-size: var(--chubb-font-xl);
+      font-weight: var(--chubb-font-semibold);
+      margin: 0;
+    }
+  }
+}
+
+// Indicador de grabación - Marina DS
+.recording-indicator {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  background-color: var(--chubb-error);
+  color: var(--chubb-text-inverse);
+  padding: var(--chubb-spacing-4) var(--chubb-spacing-6);
+  border-radius: var(--chubb-radius-full);
+  display: flex;
+  align-items: center;
+  gap: var(--chubb-spacing-3);
+  box-shadow: var(--chubb-shadow-lg);
+  font-weight: var(--chubb-font-semibold);
+  z-index: var(--chubb-z-modal);
+  animation: pulse 1.5s ease-in-out infinite;
+
+  .recording-dot {
+    width: 12px;
+    height: 12px;
+    background-color: var(--chubb-text-inverse);
+    border-radius: var(--chubb-radius-full);
+    animation: blink 1s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(255, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(255, 68, 68, 0.6);
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+// Responsividad
+@media (max-width: 768px) {
+  .bot-selector {
+    .selector-container {
+      padding: 1.5rem 1rem;
+
+      .selector-header {
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .logo {
+          height: 40px;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
+
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      .selector-description {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .bot-options {
+        gap: 1.5rem;
+
+        .bot-option {
+          width: 100%;
+          max-width: 350px;
+          padding: 2rem 1.5rem;
+
+          // En móviles, activar animación al tocar
+          &:active {
+            transform: translateY(-8px) scale(1.01);
+
+            &::before {
+              opacity: 1;
+            }
+
+            .icon img {
+              transform: scale(1.1) rotate(3deg);
+            }
+          }
+
+          .icon img {
+            width: 48px;
+            height: 48px;
+          }
+
+          h3 {
+            font-size: 1.3rem;
+          }
+
+          p {
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+
+  .app-header {
+    padding: 0.75rem 1rem;
+
+    .header-content {
+      h1 {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .recording-indicator {
+    bottom: 80px;
+    right: 20px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+// Estilos globales para el chat
+:host ::ng-deep {
+  cb-chat {
+    z-index: 999;
+  }
+
+  cb-chat-trigger {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 998;
+  }
+}

@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'chubb-app-bot' title`, () => {
+  it(`should have the 'Chubb.Bot.AI.Assistant_front' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('chubb-app-bot');
+    expect(app.title).toEqual('Chubb.Bot.AI.Assistant_front');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, chubb-app-bot');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Chubb.Bot.AI.Assistant_front');
   });
 });

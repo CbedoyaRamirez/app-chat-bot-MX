@@ -1,0 +1,273 @@
+/**
+ * Marina Design System - Design Tokens
+ * Chubb Insurance
+ *
+ * These tokens follow the official Chubb Marina Design System
+ * Reference: https://designsystem.chubb.com
+ */
+
+/* Lato Font Family - Official Chubb Typography */
+@font-face {
+  font-family: 'Lato';
+  src: url('../assets/fonts/Lato-Regular.ttf') format('truetype');
+    font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../assets/fonts/Lato-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ========================================
+     PRIMARY COLORS
+     ======================================== */
+  --chubb-primary: #150F96;
+  --chubb-primary-hover: #0F0A6E;
+  --chubb-primary-active: #0A0646;
+  --chubb-primary-light: #E6E5F5;
+  --chubb-primary-lighter: #F5F5FB;
+
+  /* ========================================
+     SEMANTIC COLORS
+     ======================================== */
+  /* Success */
+  --chubb-success: #28A745;
+  --chubb-success-light: #D4EDDA;
+  --chubb-success-dark: #1E7E34;
+
+  /* Error/Danger */
+  --chubb-error: #DC3545;
+  --chubb-error-light: #F8D7DA;
+  --chubb-error-dark: #BD2130;
+
+  /* Warning */
+  --chubb-warning: #FFC107;
+  --chubb-warning-light: #FFF3CD;
+  --chubb-warning-dark: #E0A800;
+
+  /* Info */
+  --chubb-info: #17A2B8;
+  --chubb-info-light: #D1ECF1;
+  --chubb-info-dark: #117A8B;
+
+  /* ========================================
+     NEUTRAL COLORS (Gray Scale)
+     ======================================== */
+  --chubb-gray-50: #F8F9FA;
+  --chubb-gray-100: #F1F3F5;
+  --chubb-gray-200: #E9ECEF;
+  --chubb-gray-300: #DEE2E6;
+  --chubb-gray-400: #CED4DA;
+  --chubb-gray-500: #ADB5BD;
+  --chubb-gray-600: #6C757D;
+  --chubb-gray-700: #495057;
+  --chubb-gray-800: #343A40;
+  --chubb-gray-900: #212529;
+
+  /* ========================================
+     TEXT COLORS
+     ======================================== */
+  --chubb-text-primary: #212529;
+  --chubb-text-secondary: #6C757D;
+  --chubb-text-tertiary: #ADB5BD;
+  --chubb-text-disabled: #CED4DA;
+  --chubb-text-inverse: #FFFFFF;
+  --chubb-text-link: #0033A0;
+
+  /* ========================================
+     BACKGROUND COLORS
+     ======================================== */
+  --chubb-bg-surface: #FFFFFF;
+  --chubb-bg-page: #F8F9FA;
+  --chubb-bg-elevated: #FFFFFF;
+  --chubb-bg-overlay: rgba(0, 0, 0, 0.5);
+  --chubb-bg-hover: #F8F9FA;
+  --chubb-bg-active: #E9ECEF;
+  --chubb-bg-disabled: #E9ECEF;
+
+  /* ========================================
+     BORDER COLORS
+     ======================================== */
+  --chubb-border: #DEE2E6;
+  --chubb-border-light: #E9ECEF;
+  --chubb-border-dark: #ADB5BD;
+  --chubb-border-focus: #0033A0;
+
+  /* ========================================
+     SPACING SCALE
+     ======================================== */
+  --chubb-spacing-0: 0;
+  --chubb-spacing-1: 4px;
+  --chubb-spacing-2: 8px;
+  --chubb-spacing-3: 12px;
+  --chubb-spacing-4: 16px;
+  --chubb-spacing-5: 20px;
+  --chubb-spacing-6: 24px;
+  --chubb-spacing-8: 32px;
+  --chubb-spacing-10: 40px;
+  --chubb-spacing-12: 48px;
+  --chubb-spacing-16: 64px;
+  --chubb-spacing-20: 80px;
+  --chubb-spacing-24: 96px;
+
+  /* ========================================
+     TYPOGRAPHY
+     ======================================== */
+  /* Font Families */
+  --chubb-font-primary: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --chubb-font-mono: 'Courier New', Courier, monospace;
+
+  /* Font Sizes */
+  --chubb-font-xs: 0.75rem;     /* 12px */
+  --chubb-font-sm: 0.875rem;    /* 14px */
+  --chubb-font-base: 1rem;      /* 16px */
+  --chubb-font-lg: 1.125rem;    /* 18px */
+  --chubb-font-xl: 1.25rem;     /* 20px */
+  --chubb-font-2xl: 1.5rem;     /* 24px */
+  --chubb-font-3xl: 1.875rem;   /* 30px */
+  --chubb-font-4xl: 2.25rem;    /* 36px */
+  --chubb-font-5xl: 3rem;       /* 48px */
+
+  /* Font Weights */
+  --chubb-font-light: 300;
+  --chubb-font-normal: 400;
+  --chubb-font-medium: 500;
+  --chubb-font-semibold: 600;
+  --chubb-font-bold: 700;
+
+  /* Line Heights */
+  --chubb-line-tight: 1.25;
+  --chubb-line-normal: 1.5;
+  --chubb-line-relaxed: 1.75;
+  --chubb-line-loose: 2;
+
+  /* ========================================
+     BORDER RADIUS
+     ======================================== */
+  --chubb-radius-none: 0;
+  --chubb-radius-sm: 2px;
+  --chubb-radius-base: 4px;
+  --chubb-radius-md: 6px;
+  --chubb-radius-lg: 8px;
+  --chubb-radius-xl: 12px;
+  --chubb-radius-2xl: 16px;
+  --chubb-radius-full: 9999px;
+
+  /* ========================================
+     SHADOWS
+     ======================================== */
+  --chubb-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --chubb-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --chubb-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --chubb-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --chubb-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+  --chubb-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+  --chubb-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  --chubb-shadow-none: none;
+
+  /* ========================================
+     TRANSITIONS
+     ======================================== */
+  --chubb-transition-fast: 150ms ease-in-out;
+  --chubb-transition-base: 250ms ease-in-out;
+  --chubb-transition-slow: 350ms ease-in-out;
+
+  --chubb-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --chubb-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --chubb-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ========================================
+     Z-INDEX SCALE
+     ======================================== */
+  --chubb-z-dropdown: 1000;
+  --chubb-z-sticky: 1020;
+  --chubb-z-fixed: 1030;
+  --chubb-z-modal-backdrop: 1040;
+  --chubb-z-modal: 1050;
+  --chubb-z-popover: 1060;
+  --chubb-z-tooltip: 1070;
+
+  /* ========================================
+     BREAKPOINTS (for reference in media queries)
+     ======================================== */
+  --chubb-breakpoint-sm: 640px;
+  --chubb-breakpoint-md: 768px;
+  --chubb-breakpoint-lg: 1024px;
+  --chubb-breakpoint-xl: 1280px;
+  --chubb-breakpoint-2xl: 1536px;
+}
+
+/* ========================================
+   UTILITY CLASSES (Optional convenience classes)
+   ======================================== */
+
+/* Primary color utilities */
+.chubb-bg-primary {
+  background-color: var(--chubb-primary);
+}
+
+.chubb-text-primary-color {
+  color: var(--chubb-primary);
+}
+
+.chubb-border-primary {
+  border-color: var(--chubb-primary);
+}
+
+/* Text color utilities */
+.chubb-text-primary {
+  color: var(--chubb-text-primary);
+}
+
+.chubb-text-secondary {
+  color: var(--chubb-text-secondary);
+}
+
+.chubb-text-tertiary {
+  color: var(--chubb-text-tertiary);
+}
+
+/* Background utilities */
+.chubb-bg-surface {
+  background-color: var(--chubb-bg-surface);
+}
+
+.chubb-bg-page {
+  background-color: var(--chubb-bg-page);
+}
+
+/* Shadow utilities */
+.chubb-shadow-sm {
+  box-shadow: var(--chubb-shadow-sm);
+}
+
+.chubb-shadow-md {
+  box-shadow: var(--chubb-shadow-md);
+}
+
+.chubb-shadow-lg {
+  box-shadow: var(--chubb-shadow-lg);
+}
+
+/* Border radius utilities */
+.chubb-rounded {
+  border-radius: var(--chubb-radius-base);
+}
+
+.chubb-rounded-lg {
+  border-radius: var(--chubb-radius-lg);
+}
+
+.chubb-rounded-xl {
+  border-radius: var(--chubb-radius-xl);
+}
+
+.chubb-rounded-full {
+  border-radius: var(--chubb-radius-full);
+}
