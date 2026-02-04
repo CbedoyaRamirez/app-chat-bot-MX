@@ -78,4 +78,29 @@
     <div class="recording-dot"></div>
     <span>Grabando audio...</span>
   </div>
+
+  <!-- Inactivity Warning Modal -->
+  <div class="inactivity-modal-overlay" *ngIf="showInactivityWarning && isChatOpen" (click)="keepChatActive()">
+    <div class="inactivity-modal" (click)="$event.stopPropagation()">
+      <div class="modal-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <h3 class="modal-title">¿Sigues ahí?</h3>
+      <p class="modal-message">
+        No hemos detectado actividad en un tiempo. El chat se cerrará automáticamente en:
+      </p>
+      <div class="countdown-timer">
+        <span class="countdown-number">{{ inactivityCountdown }}</span>
+        <span class="countdown-label">segundos</span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" (click)="keepChatActive()" type="button">
+          Continuar conversación
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

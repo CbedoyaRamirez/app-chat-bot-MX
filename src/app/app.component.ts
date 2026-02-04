@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ResizableModule } from 'angular-resizable-element';
@@ -38,9 +38,18 @@ export enum CbColorTheme {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   // Expose BotType enum to template
   readonly BotType = BotType;
+
+  // Configuración de timeout de inactividad
+  private readonly INACTIVITY_WARNING_TIME = 1 * 60 * 1000; // 1 minuto - Muestra advertencia
+  private readonly INACTIVITY_TIMEOUT = 2 * 60 * 1000; // 2 minutos - Cierra el chat
+  private inactivityTimer: any = null;
+  private warningTimer: any = null;
+  showInactivityWarning = false;
+  inactivityCountdown = 0; // Se calculará dinámicamente
+  private countdownInterval: any = null;
 
   // Bot configurations
   readonly botConfigs: Record<BotType, BotConfig> = {
@@ -65,7 +74,7 @@ export class AppComponent implements OnInit {
 
   // Configuración del chat
   theme = this.botConfigs[this.currentBotType].theme;
-  enableTimeStamp = false;
+  enableTimeStamp = true;
   enableMicrophone = true;
   errorState = false;
   isTyping = false;
@@ -124,7 +133,8 @@ export class AppComponent implements OnInit {
       {
         message: this.currentConfig.welcomeMessage,
         messageType: 'text',
-        fromUser: false
+        fromUser: false,
+        timestamp: new Date()
       }
     ];
   }
@@ -161,12 +171,16 @@ export class AppComponent implements OnInit {
       {
         message: this.currentConfig.welcomeMessage,
         messageType: 'text',
-        fromUser: false
+        fromUser: false,
+        timestamp: new Date()
       }
     ];
 
     // Abrir el chat automáticamente
     this.isChatOpen = true;
+
+    // Iniciar timer de inactividad
+    this.startInactivityTimer();
 
     console.log('Bot cambiado a:', botType, '- Chat abierto automáticamente');
   }
@@ -183,9 +197,17 @@ export class AppComponent implements OnInit {
         {
           message: this.currentConfig.welcomeMessage,
           messageType: 'text',
-          fromUser: false
+          fromUser: false,
+          timestamp: new Date()
         }
       ];
+    }
+
+    // Iniciar timer de inactividad al abrir el chat
+    if (this.isChatOpen) {
+      this.startInactivityTimer();
+    } else {
+      this.clearInactivityTimers();
     }
   }
 
@@ -201,6 +223,9 @@ export class AppComponent implements OnInit {
     if (!userMessage) {
       return;
     }
+
+    // Resetear el timer de inactividad cuando el usuario envía un mensaje
+    this.resetInactivityTimer();
 
     // Indicar que el bot está "escribiendo"
     this.isTyping = true;
@@ -222,7 +247,8 @@ export class AppComponent implements OnInit {
         const botMessage: Message = {
           message: response.response,
           messageType: 'text',
-          fromUser: false
+          fromUser: false,
+          timestamp: new Date()
         };
 
         event.messages.push(botMessage);
@@ -236,7 +262,8 @@ export class AppComponent implements OnInit {
           const sourcesMessage: Message = {
             message: `📚 Fuentes consultadas: ${sources}`,
             messageType: 'text',
-            fromUser: false
+            fromUser: false,
+            timestamp: new Date()
           };
           event.messages.push(sourcesMessage);
         }
@@ -246,7 +273,8 @@ export class AppComponent implements OnInit {
           const completeMessage: Message = {
             message: '¡Gracias por usar nuestro servicio! Tu cotización ha sido procesada.',
             messageType: 'text',
-            fromUser: false
+            fromUser: false,
+            timestamp: new Date()
           };
           event.messages.push(completeMessage);
         }
@@ -262,7 +290,8 @@ export class AppComponent implements OnInit {
           message: 'Lo siento, ocurrió un error al procesar tu mensaje. Por favor, intenta nuevamente.',
           messageType: 'text',
           fromUser: false,
-          errorState: true
+          errorState: true,
+          timestamp: new Date()
         };
 
         event.messages.push(errorMessage);
@@ -305,7 +334,8 @@ export class AppComponent implements OnInit {
               const userMessage: Message = {
                 message: sttResponse.text,
                 messageType: 'text',
-                fromUser: true
+                fromUser: true,
+                timestamp: new Date()
               };
 
               this.messages.push(userMessage);
@@ -345,6 +375,11 @@ export class AppComponent implements OnInit {
   onMinimizeChat(event: Message[]): void {
     this.messages = event;
     this.isChatOpen = false;
+
+    // Limpiar timers de inactividad
+    this.clearInactivityTimers();
+    this.showInactivityWarning = false;
+
     console.log('Chat minimizado');
   }
 
@@ -356,6 +391,10 @@ export class AppComponent implements OnInit {
     // Reiniciar el estado del chat
     this.messages = [];
     this.isChatOpen = false;
+
+    // Limpiar timers de inactividad
+    this.clearInactivityTimers();
+    this.showInactivityWarning = false;
 
     // Generar nuevo ID de sesión
     this.sessionId = this.botService.generateSessionId();
@@ -380,6 +419,120 @@ export class AppComponent implements OnInit {
    */
   onHandleSecondaryButton(event: any): void {
     console.log('Botón secundario del modal presionado', event);
+  }
+
+  /**
+   * Inicia el temporizador de inactividad
+   */
+  private startInactivityTimer(): void {
+    this.clearInactivityTimers();
+
+    // Timer para mostrar advertencia
+    this.warningTimer = setTimeout(() => {
+      if (this.isChatOpen) {
+        this.showInactivityWarning = true;
+        // Calcular los segundos restantes hasta el cierre
+        this.inactivityCountdown = Math.floor((this.INACTIVITY_TIMEOUT - this.INACTIVITY_WARNING_TIME) / 1000);
+        this.startCountdown();
+      }
+    }, this.INACTIVITY_WARNING_TIME);
+
+    // Timer para cerrar el chat automáticamente
+    this.inactivityTimer = setTimeout(() => {
+      if (this.isChatOpen) {
+        this.closeByInactivity();
+      }
+    }, this.INACTIVITY_TIMEOUT);
+  }
+
+  /**
+   * Reinicia el temporizador de inactividad
+   */
+  private resetInactivityTimer(): void {
+    this.showInactivityWarning = false;
+    this.clearCountdown();
+    this.startInactivityTimer();
+  }
+
+  /**
+   * Limpia todos los temporizadores de inactividad
+   */
+  private clearInactivityTimers(): void {
+    if (this.warningTimer) {
+      clearTimeout(this.warningTimer);
+      this.warningTimer = null;
+    }
+    if (this.inactivityTimer) {
+      clearTimeout(this.inactivityTimer);
+      this.inactivityTimer = null;
+    }
+    this.clearCountdown();
+  }
+
+  /**
+   * Inicia la cuenta regresiva en el modal de advertencia
+   */
+  private startCountdown(): void {
+    this.clearCountdown();
+    this.countdownInterval = setInterval(() => {
+      this.inactivityCountdown--;
+      if (this.inactivityCountdown <= 0) {
+        this.clearCountdown();
+      }
+    }, 1000);
+  }
+
+  /**
+   * Limpia el intervalo de cuenta regresiva
+   */
+  private clearCountdown(): void {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+      this.countdownInterval = null;
+    }
+  }
+
+  /**
+   * Cierra el chat por inactividad
+   */
+  private closeByInactivity(): void {
+    console.log('Chat cerrado por inactividad');
+
+    // Agregar mensaje de sistema sobre el cierre
+    const inactivityMessage: Message = {
+      message: 'Chat cerrado por inactividad. ¡Gracias por usar nuestro servicio!',
+      messageType: 'text',
+      fromUser: false,
+      timestamp: new Date()
+    };
+
+    this.messages.push(inactivityMessage);
+
+    // Cerrar el chat después de un breve delay
+    setTimeout(() => {
+      this.showInactivityWarning = false;
+      this.isChatOpen = false;
+      this.clearInactivityTimers();
+
+      // Reiniciar estado del chat
+      this.messages = [];
+      this.sessionId = this.botService.generateSessionId();
+    }, 2000);
+  }
+
+  /**
+   * Mantiene el chat activo cuando el usuario responde a la advertencia
+   */
+  keepChatActive(): void {
+    this.showInactivityWarning = false;
+    this.resetInactivityTimer();
+  }
+
+  /**
+   * Lifecycle hook - Limpia los temporizadores al destruir el componente
+   */
+  ngOnDestroy(): void {
+    this.clearInactivityTimers();
   }
 
   /**

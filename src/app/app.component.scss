@@ -442,6 +442,189 @@
   }
 }
 
+// Modal de advertencia de inactividad
+.inactivity-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes countdownPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.inactivity-modal {
+  background: var(--chubb-bg-surface);
+  border-radius: var(--chubb-radius-2xl);
+  padding: var(--chubb-spacing-10);
+  max-width: 440px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: modalScaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  .modal-icon {
+    margin-bottom: var(--chubb-spacing-6);
+    display: flex;
+    justify-content: center;
+
+    svg {
+      animation: pulse 2s ease-in-out infinite;
+    }
+  }
+
+  .modal-title {
+    font-size: var(--chubb-font-2xl);
+    font-weight: var(--chubb-font-semibold);
+    color: var(--chubb-text-primary);
+    margin: 0 0 var(--chubb-spacing-4) 0;
+  }
+
+  .modal-message {
+    font-size: var(--chubb-font-base);
+    color: var(--chubb-text-secondary);
+    line-height: var(--chubb-line-relaxed);
+    margin: 0 0 var(--chubb-spacing-8) 0;
+  }
+
+  .countdown-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--chubb-spacing-2);
+    margin-bottom: var(--chubb-spacing-8);
+    padding: var(--chubb-spacing-6);
+    background: linear-gradient(135deg, #FFE5CC 0%, #FFD4B3 100%);
+    border-radius: var(--chubb-radius-xl);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .countdown-number {
+      font-size: 4rem;
+      font-weight: var(--chubb-font-bold);
+      color: #FF6B00;
+      line-height: 1;
+      animation: countdownPulse 1s ease-in-out infinite;
+    }
+
+    .countdown-label {
+      font-size: var(--chubb-font-sm);
+      color: #CC5500;
+      font-weight: var(--chubb-font-medium);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    background: var(--chubb-primary);
+    color: var(--chubb-text-inverse);
+    border: none;
+    padding: var(--chubb-spacing-4) var(--chubb-spacing-8);
+    border-radius: var(--chubb-radius-full);
+    font-size: var(--chubb-font-base);
+    font-weight: var(--chubb-font-semibold);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 12px rgba(26, 13, 171, 0.3);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.4s, height 0.4s;
+    }
+
+    &:hover {
+      background: var(--chubb-primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(26, 13, 171, 0.4);
+
+      &::before {
+        width: 200%;
+        height: 200%;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Responsividad
+@media (max-width: 640px) {
+  .inactivity-modal {
+    padding: var(--chubb-spacing-8);
+    max-width: 90%;
+
+    .modal-title {
+      font-size: var(--chubb-font-xl);
+    }
+
+    .modal-message {
+      font-size: var(--chubb-font-sm);
+    }
+
+    .countdown-timer {
+      .countdown-number {
+        font-size: 3rem;
+      }
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: var(--chubb-spacing-5) var(--chubb-spacing-6);
+    }
+  }
+}
+
 // Estilos globales para el chat
 :host ::ng-deep {
   cb-chat {
